@@ -92,22 +92,23 @@ def show_successful_responses():
 def print_banner():
     # Display ASCII banner
     ascii_banner = """
-  ____  _           _______          _
- |  _ \| |_   _ ___| ___ \__  _ __ (_) __ _
- | | | | | | | / __| |_/ / _ \| '_ \| |/ _` |
- | |_| | | |_| \__ \  __/ (_) | | | | | (_| |
- |____/|_|\__,_|___/_|   \___/|_| |_|_|\__,_|
+ :'######::'##::::'##:'########:'########:::::::::::'########::'########::'##::::'##:'########:'########:
+'##... ##: ###::'###:... ##..:: ##.... ##:::::::::: ##.... ##: ##.... ##: ##:::: ##:... ##..:: ##.....::
+ ##:::..:: ####'####:::: ##:::: ##:::: ##:::::::::: ##:::: ##: ##:::: ##: ##:::: ##:::: ##:::: ##:::::::
+. ######:: ## ### ##:::: ##:::: ########::'#######: ########:: ########:: ##:::: ##:::: ##:::: ######:::
+:..... ##: ##. #: ##:::: ##:::: ##.....:::........: ##.... ##: ##.. ##::: ##:::: ##:::: ##:::: ##...::::
+'##::: ##: ##:.:: ##:::: ##:::: ##::::::::::::::::: ##:::: ##: ##::. ##:: ##:::: ##:::: ##:::: ##:::::::
+. ######:: ##:::: ##:::: ##:::: ##::::::::::::::::: ########:: ##:::. ##:. #######::::: ##:::: ########:
+:......:::..:::::..:::::..:::::..::::::::::::::::::........:::..:::::..:::.......::::::..:::::........::
+                                Coded by Fernando García (Incuerd0)
+    
+    Description: This script performs a brute-force attack on an SMTP server by verifying
+    the existence of user mailboxes using the VRFY command.
 
-Coded by Fernando García aka Incuerd0
-
-This script performs a brute-force attack on an SMTP server by
-verifying the existence of user mailboxes using the VRFY command.
+    GitHub Repository: https://github.com/fernandoG494/SMTP-Brute
 
 Usage: python script.py [IP] [PORT] [DICTIONARY.TXT]
-
 Example: python script.py 10.0.0.1 25 usernames.txt
-
-GitHub Repository: https://github.com/example/smtp-brute
 """
     print(ascii_banner)
 
