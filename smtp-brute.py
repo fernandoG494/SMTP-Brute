@@ -8,10 +8,12 @@ GREEN = "\033[92m"
 YELLOW = "\033[93m"
 RESET = "\033[0m"
 
-# Global list to store all successful responses
+# Global variables
+last_index = 0
 successful_responses = []
 
-async def telnet_connect(ip, port, usernames, start_index=0):
+async def telnet_connect(ip, port, usernames):
+  global last_index
   global successful_responses
 
   try:
@@ -33,7 +35,7 @@ async def telnet_connect(ip, port, usernames, start_index=0):
       print(f"Number of entries: {total_entries}")
 
       # Loop to check each username
-      for i, username in enumerate(usernames[start_index:], start=start_index):
+      for i, username in enumerate(usernames[last_index:], start=last_index):
         print(f"Verifying {i + 1}/{total_entries} - {username}")
 
         # Send the VRFY command for the current username
@@ -45,11 +47,11 @@ async def telnet_connect(ip, port, usernames, start_index=0):
 
         # Check the response code
         if response_str.startswith("421"):
-          save_last_index(i)
+          last_index = i
           print(YELLOW + "Closing the connection. Reconnecting, please wait..." + RESET)
           writer.close()
           await asyncio.sleep(5)
-          return await telnet_connect(ip, port, usernames, start_index=i)
+          return await telnet_connect(ip, port, usernames)
         elif response_str.startswith(("220", "252")):
           print(GREEN + response_str + RESET)
           successful_responses.append(response_str)
@@ -62,17 +64,6 @@ async def telnet_connect(ip, port, usernames, start_index=0):
   except Exception as e:
     print(f"Error attempting to connect to {ip}:{port}")
     print(f"Error: {e}")
-
-def save_last_index(index):
-  with open("last_index.txt", "w") as file:
-    file.write(str(index + 1))  # Increment by 1 to continue with the next username
-
-def read_last_index():
-  try:
-    with open("last_index.txt", "r") as file:
-      return int(file.read().strip())
-  except FileNotFoundError:
-    return 0
 
 def read_usernames_from_file(filename):
   try:
@@ -90,8 +81,8 @@ def show_successful_responses():
       print(GREEN + f"  {response}" + RESET)
 
 def print_banner():
-    # Display ASCII banner
-    ascii_banner = """
+  # Display ASCII banner
+  ascii_banner = """
  :'######::'##::::'##:'########:'########:::::::::::'########::'########::'##::::'##:'########:'########:
 '##... ##: ###::'###:... ##..:: ##.... ##:::::::::: ##.... ##: ##.... ##: ##:::: ##:... ##..:: ##.....::
  ##:::..:: ####'####:::: ##:::: ##:::: ##:::::::::: ##:::: ##: ##:::: ##: ##:::: ##:::: ##:::: ##:::::::
@@ -110,24 +101,18 @@ def print_banner():
 Usage: python script.py [IP] [PORT] [DICTIONARY.TXT]
 Example: python script.py 10.0.0.1 25 usernames.txt
 """
-    print(ascii_banner)
+  print(ascii_banner)
 
 if __name__ == "__main__":
-    # Display the banner
-    print_banner()
+  # Display the banner
+  print_banner()
 
-    if len(sys.argv) != 4:
-        print("Usage: python script.py [IP] [PORT] [DICTIONARY.TXT]")
-        sys.exit(1)
+  if len(sys.argv) != 4:
+    print("Usage: python script.py [IP] [PORT] [DICTIONARY.TXT]")
+    sys.exit(1)
 
-    ip, port, filename = sys.argv[1], int(sys.argv[2]), sys.argv[3]
-    usernames, last_index = read_usernames_from_file(filename), read_last_index()
+  ip, port, filename = sys.argv[1], int(sys.argv[2]), sys.argv[3]
+  usernames = read_usernames_from_file(filename)
 
-    asyncio.run(telnet_connect(ip, port, usernames, start_index=last_index))
-    show_successful_responses()
-
-    try:
-        os.remove("last_index.txt")
-    except FileNotFoundError:
-        pass
-
+  asyncio.run(telnet_connect(ip, port, usernames))
+  show_successful_responses()
