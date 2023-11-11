@@ -39,4 +39,4 @@ HTB Profile: https://app.hackthebox.com/profile/20709
 LinkedIn: https://www.linkedin.com/in/lfgc
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](./LICENSE).
