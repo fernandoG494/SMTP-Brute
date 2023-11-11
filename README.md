@@ -31,6 +31,8 @@ python script.py 10.0.0.1 25 usernames.txt
 ![Alt text](./Screenshots/image.png)
 ![Alt text](./Screenshots/image-1.png)
 
+_This is a "Work in progress" script, I have a few ideas that can optimize the script and show better the output, so I have in mind to continue working this repo._
+
 ## Author
 Coded by Fernando García, a.k.a Incuerd0
 
